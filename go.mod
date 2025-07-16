@@ -1,4 +1,4 @@
-module github.com/openrdap/rdap
+module github.com/Spirit55555/rdap
 
 go 1.19
 

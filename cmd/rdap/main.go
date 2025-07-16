@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/openrdap/rdap"
+	"github.com/Spirit55555/rdap"
 )
 
 func main() {

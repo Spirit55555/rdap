@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/openrdap/rdap/bootstrap"
+	"github.com/Spirit55555/rdap/bootstrap"
 )
 
 type Response struct {

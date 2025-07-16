@@ -7,7 +7,7 @@ package bootstrap
 import (
 	"testing"
 
-	"github.com/openrdap/rdap/test"
+	"github.com/Spirit55555/rdap/test"
 )
 
 func TestDownload(t *testing.T) {
