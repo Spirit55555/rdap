@@ -149,6 +149,10 @@ type Request struct {
 	// Query/Params fields not used).
 	Server *url.URL
 
+	// Optional Basic Authorization for the request
+	BasicAuthUsername string
+	BasicAuthPassword string
+
 	// Optional list of contact roles. This enables additional HTTP requests for
 	// these contact roles, to obtain full contact information.
 	//

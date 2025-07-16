@@ -256,6 +256,11 @@ func (c *Client) get(rdapReq *Request) *HTTPResponse {
 		req.Header.Add("User-Agent", c.UserAgent)
 	}
 
+	// Optionally add Authorization header
+	if rdapReq.BasicAuthUsername != "" && rdapReq.BasicAuthPassword != "" {
+		req.SetBasicAuth(rdapReq.BasicAuthUsername, rdapReq.BasicAuthPassword)
+	}
+
 	// HTTP Accept header.
 	req.Header.Add("Accept", "application/rdap+json, application/json")
 
