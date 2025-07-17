@@ -382,6 +382,7 @@ func bootstrapTypeFor(req *Request) *bootstrap.RegistryType {
 
 	switch req.Type {
 	case DomainRequest:
+	case NameserverRequest:
 		*b = bootstrap.DNS
 	case AutnumRequest:
 		*b = bootstrap.ASN
