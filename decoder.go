@@ -152,6 +152,8 @@ func (d *Decoder) decodeTopLevel(src map[string]interface{}) (interface{}, error
 				d.target = &IPNetwork{}
 			case "nameserver":
 				d.target = &Nameserver{}
+			case "norid_domain_count":
+				d.target = &NoridDomainCount{}
 			default:
 				return nil, DecoderError{text: "objectClassName is not recognised"}
 			}
