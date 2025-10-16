@@ -7,10 +7,11 @@ package rdap
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"strings"
 	"time"
+
+	"io"
 
 	"github.com/Spirit55555/rdap/bootstrap"
 )
@@ -114,7 +115,7 @@ func (c *Client) Do(req *Request) (*Response, error) {
 	}
 
 	c.Verbose("")
-	c.Verbose(fmt.Sprintf("client: Running..."))
+	c.Verbose("client: Running...")
 	c.Verbose(fmt.Sprintf("client: Request type  : %s", req.Type))
 	c.Verbose(fmt.Sprintf("client: Request query : %s", req.Query))
 
@@ -222,7 +223,7 @@ func (c *Client) Do(req *Request) (*Response, error) {
 			} else if hrr.StatusCode == 404 {
 				return resp, &ClientError{
 					Type: ObjectDoesNotExist,
-					Text: fmt.Sprintf("RDAP server returned 404, object does not exist."),
+					Text: "RDAP server returned 404, object does not exist.",
 				}
 			}
 		}
@@ -280,7 +281,7 @@ func (c *Client) get(rdapReq *Request) *HTTPResponse {
 	}
 
 	defer resp.Body.Close()
-	httpResponse.Body, httpResponse.Error = ioutil.ReadAll(resp.Body)
+	httpResponse.Body, httpResponse.Error = io.ReadAll(resp.Body)
 
 	httpResponse.Duration = time.Since(start)
 

@@ -259,7 +259,7 @@ func (r *Request) URL() *url.URL {
 		resultURL = new(url.URL)
 		*resultURL = *r.Server
 	} else {
-		tempURL := &*r.Server
+		tempURL := r.Server
 		tempURL.RawQuery = ""
 		tempURL.Fragment = ""
 		tempURLString := tempURL.String()
@@ -463,7 +463,7 @@ func NewAutoRequest(queryText string) *Request {
 	}
 
 	// IP network?
-	_, ipNet, err := net.ParseCIDR(queryText)
+	_, ipNet, _ := net.ParseCIDR(queryText)
 	if ipNet != nil {
 		return NewIPNetRequest(ipNet)
 	}

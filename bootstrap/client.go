@@ -94,10 +94,11 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"time"
+
+	"io"
 
 	"github.com/Spirit55555/rdap/bootstrap/cache"
 )
@@ -235,10 +236,10 @@ func (c *Client) download(ctx context.Context, registry RegistryType) ([]byte, R
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
-		return nil, nil, fmt.Errorf("Server returned non-200 status code: %s", resp.Status)
+		return nil, nil, fmt.Errorf("server returned non-200 status code: %s", resp.Status)
 	}
 
-	json, err := ioutil.ReadAll(resp.Body)
+	json, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -343,7 +344,7 @@ func (c *Client) Lookup(question *Question) (*Answer, error) {
 		if answer.Entry != "" {
 			c.Verbose(fmt.Sprintf("  bootstrap: Matching entry '%s'", answer.Entry))
 		} else {
-			c.Verbose(fmt.Sprintf("  bootstrap: No match"))
+			c.Verbose("  bootstrap: No match")
 		}
 
 		for i, url := range answer.URLs {

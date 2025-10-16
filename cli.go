@@ -8,7 +8,6 @@ import (
 	"encoding/pem"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net"
 	"net/http"
 	"net/url"
@@ -21,6 +20,8 @@ import (
 	"github.com/Spirit55555/rdap/sandbox"
 
 	"golang.org/x/crypto/pkcs12"
+
+	"os"
 
 	kingpin "github.com/alecthomas/kingpin/v2"
 )
@@ -334,7 +335,7 @@ func RunCLI(args []string, stdout io.Writer, stderr io.Writer, options CLIOption
 			if !options.Sandbox {
 				dc.Dir = *cacheDirFlag
 			} else {
-				verbose(fmt.Sprintf("rdap: Ignored --cache-dir option (sandbox mode enabled)"))
+				verbose("rdap: Ignored --cache-dir option (sandbox mode enabled)")
 			}
 		}
 
@@ -383,13 +384,13 @@ func RunCLI(args []string, stdout io.Writer, stderr io.Writer, options CLIOption
 	var clientCert tls.Certificate
 	if *clientCertFilename != "" || *clientKeyFilename != "" {
 		if *clientP12FilenameAndPassword != "" {
-			printError(stderr, fmt.Sprintf("rdap: Error: Can't use both --cert/--key and --p12 together"))
+			printError(stderr, "rdap: Error: Can't use both --cert/--key and --p12 together")
 			return 1
 		} else if *clientCertFilename == "" || *clientKeyFilename == "" {
-			printError(stderr, fmt.Sprintf("rdap: Error: --cert and --key must be used together"))
+			printError(stderr, "rdap: Error: --cert and --key must be used together")
 			return 1
 		} else if options.Sandbox {
-			verbose(fmt.Sprintf("rdap: Ignored --cert and --key options (sandbox mode enabled)"))
+			verbose("rdap: Ignored --cert and --key options (sandbox mode enabled)")
 		} else {
 			var err error
 			clientCert, err = tls.LoadX509KeyPair(*clientCertFilename, *clientKeyFilename)
@@ -421,7 +422,7 @@ func RunCLI(args []string, stdout io.Writer, stderr io.Writer, options CLIOption
 		if options.Sandbox {
 			p12, err = sandbox.LoadFile(p12FilenameAndPassword[0])
 		} else {
-			p12, err = ioutil.ReadFile(p12FilenameAndPassword[0])
+			p12, err = os.ReadFile(p12FilenameAndPassword[0])
 		}
 
 		// Check the file was read correctly.
@@ -480,7 +481,7 @@ func RunCLI(args []string, stdout io.Writer, stderr io.Writer, options CLIOption
 	}
 
 	if *insecureFlag {
-		verbose(fmt.Sprintf("rdap: SSL certificate validation disabled"))
+		verbose("rdap: SSL certificate validation disabled")
 	}
 
 	// Set the request timeout.

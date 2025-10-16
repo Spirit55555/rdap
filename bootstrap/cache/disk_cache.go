@@ -7,7 +7,6 @@ package cache
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"time"
@@ -67,7 +66,7 @@ func (d *DiskCache) InitDir() (bool, error) {
 		if fileInfo.IsDir() {
 			return false, nil
 		} else {
-			return false, errors.New("Cache dir is not a dir")
+			return false, errors.New("cache dir is not a dir")
 		}
 	}
 
@@ -98,7 +97,7 @@ func (d *DiskCache) Save(filename string, data []byte) error {
 		return err
 	}
 
-	err = ioutil.WriteFile(d.cacheDirPath(filename), data, 0664)
+	err = os.WriteFile(d.cacheDirPath(filename), data, 0664)
 	if err != nil {
 		return err
 	}
@@ -107,7 +106,7 @@ func (d *DiskCache) Save(filename string, data []byte) error {
 	if err == nil {
 		d.lastLoadedModTime[filename] = fileModTime
 	} else {
-		return fmt.Errorf("File %s failed to save correctly: %s", filename, err)
+		return fmt.Errorf("file %s failed to save correctly: %s", filename, err)
 	}
 
 	return nil
@@ -122,11 +121,11 @@ func (d *DiskCache) Save(filename string, data []byte) error {
 func (d *DiskCache) Load(filename string) ([]byte, error) {
 	fileModTime, err := d.modTime(filename)
 	if err != nil {
-		return nil, fmt.Errorf("Unable to load %s: %s", filename, err)
+		return nil, fmt.Errorf("unable to load %s: %s", filename, err)
 	}
 
 	var bytes []byte
-	bytes, err = ioutil.ReadFile(d.cacheDirPath(filename))
+	bytes, err = os.ReadFile(d.cacheDirPath(filename))
 
 	if err != nil {
 		return nil, err

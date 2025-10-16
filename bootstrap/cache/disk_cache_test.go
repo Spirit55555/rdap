@@ -6,7 +6,6 @@ package cache
 
 import (
 	"bytes"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
@@ -14,14 +13,14 @@ import (
 )
 
 func TestDiskCache(t *testing.T) {
-	dir, err := ioutil.TempDir("", "test")
+	dir, err := os.MkdirTemp("", "test")
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer os.RemoveAll(dir)
 
 	rdapDir := filepath.Join(dir, ".openrdap")
-	
+
 	m1 := NewDiskCache()
 	m1.Dir = rdapDir
 
@@ -47,8 +46,8 @@ func TestDiskCache(t *testing.T) {
 		t.Fatalf("asn.json expected shouldreload in m2")
 	}
 
-	loaded1, err := m1.Load("asn.json")
-	loaded2, err := m2.Load("asn.json")
+	loaded1, _ := m1.Load("asn.json")
+	loaded2, _ := m2.Load("asn.json")
 
 	if m1.State("asn.json") != Good {
 		t.Fatalf("asn.json expected good in m1")
@@ -56,9 +55,9 @@ func TestDiskCache(t *testing.T) {
 		t.Fatalf("asn.json expected good in m2")
 	}
 
-	if bytes.Compare(loaded1, asn1) != 0 {
+	if !bytes.Equal(loaded1, asn1) {
 		t.Fatalf("loaded1(%v) != asn1(%v)", loaded1, asn1)
-	} else if bytes.Compare(loaded2, asn1) != 0 {
+	} else if !bytes.Equal(loaded2, asn1) {
 		t.Fatalf("loaded2(%v) != asn1(%v)", loaded2, asn1)
 	}
 
@@ -86,8 +85,8 @@ func TestDiskCache(t *testing.T) {
 	m1.Timeout = time.Hour
 	m2.Timeout = time.Hour
 
-	loaded1, err = m1.Load("asn.json")
-	loaded2, err = m2.Load("asn.json")
+	loaded1, _ = m1.Load("asn.json")
+	loaded2, _ = m2.Load("asn.json")
 
 	if m1.State("asn.json") != Good {
 		t.Fatalf("asn.json expected good in m1")
@@ -95,10 +94,9 @@ func TestDiskCache(t *testing.T) {
 		t.Fatalf("asn.json expected good in m2")
 	}
 
-	if bytes.Compare(loaded1, asn2) != 0 {
+	if !bytes.Equal(loaded1, asn2) {
 		t.Fatalf("loaded1(%v) != asn2(%v)", loaded1, asn2)
-	} else if bytes.Compare(loaded2, asn2) != 0 {
+	} else if !bytes.Equal(loaded2, asn2) {
 		t.Fatalf("loaded2(%v) != asn2(%v)", loaded2, asn2)
 	}
 }
-

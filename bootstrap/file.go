@@ -65,7 +65,7 @@ func NewFile(jsonDocument []byte) (*File, error) {
 			entries = s[1]
 			rawURLs = s[2]
 		default:
-			return nil, errors.New("Malformed bootstrap (bad services array)")
+			return nil, errors.New("malformed bootstrap (bad services array)")
 		}
 
 		var urls []*url.URL

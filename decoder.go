@@ -323,20 +323,20 @@ func (d *Decoder) decodeUint(keyName string, src interface{}, dst reflect.Value,
 
 	success := true
 
-	switch src.(type) {
+	switch src := src.(type) {
 	case bool:
-		if src.(bool) {
+		if src {
 			result = 1
 		}
 
 		d.addDecodeNote(decodeData, keyName, "bool to uint conversion")
 	case float64:
-		result = uint64(src.(float64))
+		result = uint64(src)
 		d.addDecodeNote(decodeData, keyName, "float64 to uint conversion")
 	case string:
 		var convError error
 
-		result, convError = strconv.ParseUint(src.(string), 10, 64)
+		result, convError = strconv.ParseUint(src, 10, 64)
 
 		if convError != nil {
 			result = 0
@@ -393,20 +393,20 @@ func (d *Decoder) decodeInt(keyName string, src interface{}, dst reflect.Value, 
 
 	success := true
 
-	switch src.(type) {
+	switch src := src.(type) {
 	case bool:
-		if src.(bool) {
+		if src {
 			result = 1
 		}
 
 		d.addDecodeNote(decodeData, keyName, "bool to int conversion")
 	case float64:
-		result = int64(src.(float64))
+		result = int64(src)
 		d.addDecodeNote(decodeData, keyName, "float64 to int conversion")
 	case string:
 		var convError error
 
-		result, convError = strconv.ParseInt(src.(string), 10, 64)
+		result, convError = strconv.ParseInt(src, 10, 64)
 
 		if convError != nil {
 			result = 0
@@ -469,19 +469,19 @@ func (d *Decoder) decodeFloat64(keyName string, src interface{}, dst reflect.Val
 
 	success := true
 
-	switch src.(type) {
+	switch src := src.(type) {
 	case bool:
-		if src.(bool) {
+		if src {
 			result = 1.0
 		}
 
 		d.addDecodeNote(decodeData, keyName, "bool to float64 conversion")
 	case float64:
-		result = src.(float64)
+		result = src
 	case string:
 		var convError error
 
-		result, convError = strconv.ParseFloat(src.(string), 64)
+		result, convError = strconv.ParseFloat(src, 64)
 
 		if convError != nil {
 			result = 0.0
@@ -515,15 +515,15 @@ func (d *Decoder) decodeString(keyName string, src interface{}, dst reflect.Valu
 
 	success := true
 
-	switch src.(type) {
+	switch src := src.(type) {
 	case bool:
-		result = strconv.FormatBool(src.(bool))
+		result = strconv.FormatBool(src)
 		d.addDecodeNote(decodeData, keyName, "bool to string conversion")
 	case float64:
-		result = strconv.FormatFloat(src.(float64), 'f', -1, 64)
+		result = strconv.FormatFloat(src, 'f', -1, 64)
 		d.addDecodeNote(decodeData, keyName, "float64 to string conversion")
 	case string:
-		result = src.(string)
+		result = src
 	case nil:
 		result = ""
 		d.addDecodeNote(decodeData, keyName, "null to empty string conversion")
@@ -549,11 +549,11 @@ func (d *Decoder) decodeBool(keyName string, src interface{}, dst reflect.Value,
 
 	success := true
 
-	switch src.(type) {
+	switch src := src.(type) {
 	case bool:
-		result = src.(bool)
+		result = src
 	case float64:
-		f := src.(float64)
+		f := src
 		if f != 0 {
 			result = true
 		}
@@ -561,7 +561,7 @@ func (d *Decoder) decodeBool(keyName string, src interface{}, dst reflect.Value,
 		d.addDecodeNote(decodeData, keyName, "float64 to bool conversion")
 	case string:
 		var convError error
-		result, convError = strconv.ParseBool(src.(string))
+		result, convError = strconv.ParseBool(src)
 
 		if convError != nil {
 			d.addDecodeNote(decodeData, keyName, "error converting string to bool")
