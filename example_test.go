@@ -6,6 +6,7 @@ package rdap_test
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/Spirit55555/rdap"
 )
@@ -107,7 +108,7 @@ func PrintDomain(d *rdap.Domain) {
 			// Address.
 			fmt.Printf("  POBox     : '%s'\n", v.POBox())
 			fmt.Printf("  Ext       : '%s'\n", v.ExtendedAddress())
-			fmt.Printf("  Street    : '%s'\n", v.StreetAddress())
+			fmt.Printf("  Street    : '%s'\n", strings.Join(v.StreetAddress(), ", "))
 			fmt.Printf("  Locality  : '%s'\n", v.Locality())
 			fmt.Printf("  Region    : '%s'\n", v.Region())
 			fmt.Printf("  PostalCode: '%s'\n", v.PostalCode())

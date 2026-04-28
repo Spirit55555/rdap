@@ -55,7 +55,7 @@ func TestVCardExample(t *testing.T) {
 		t.Errorf("jCard parse failed %v %s\n", j, err)
 	}
 
-	numProperties := 17
+	numProperties := 18
 	if len(j.Properties) != numProperties {
 		t.Errorf("Got %d properties expected %d", len(j.Properties), numProperties)
 	}
