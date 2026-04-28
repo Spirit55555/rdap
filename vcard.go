@@ -417,6 +417,23 @@ func (v *VCard) Country() string {
 	return v.getFirstAddressField(6 + v.getStreetAddressOffset())
 }
 
+// CountryCode returns the address country code.
+//
+// Returns empty string if no country code is present.
+func (v *VCard) CountryCode() string {
+	property := v.GetFirst("adr")
+
+	if property == nil {
+		return ""
+	}
+
+	if cc, ok := property.Parameters["cc"]; ok {
+		return cc[0]
+	}
+
+	return ""
+}
+
 // Tel returns the VCard's first (voice) telephone number.
 //
 // Returns empty string if the VCard contains no suitable telephone number.
@@ -478,6 +495,13 @@ func (v *VCard) Email() string {
 // Returns empty string if the VCard contains no  organization.
 func (v *VCard) Org() string {
 	return v.getFirstPropertySingleString("org")
+}
+
+// ContactURI returns the VCard's contact-uri.
+//
+// Returns empty string if the VCard contains no ContactURI.
+func (v *VCard) ContactURI() string {
+	return v.getFirstPropertySingleString("contact-uri")
 }
 
 func (v *VCard) getFirstAddressField(index int) string {

@@ -154,10 +154,12 @@ func TestVCardQuickAccessors(t *testing.T) {
 		j.Region(),
 		j.PostalCode(),
 		j.Country(),
+		j.CountryCode(),
 		j.Tel(),
 		j.Fax(),
 		j.Email(),
 		j.Org(),
+		j.ContactURI(),
 	}
 
 	expected := []string{
@@ -169,10 +171,12 @@ func TestVCardQuickAccessors(t *testing.T) {
 		"QC",
 		"G1V 2M2",
 		"Canada",
+		"CA",
 		"tel:+1-418-656-9254;ext=102",
 		"",
 		"simon.perreault@viagenie.ca",
 		"Viagenie",
+		"mailto:contact@example.com",
 	}
 
 	if !reflect.DeepEqual(got, expected) {
