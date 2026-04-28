@@ -381,10 +381,19 @@ func (v *VCard) ExtendedAddress() string {
 
 // StreetAddress returns the street address.
 //
-// Returns empty string if no address is present.
-// TODO: This only returns the first street address value if it's an array
-func (v *VCard) StreetAddress() string {
-	return v.getFirstAddressField(2)
+// Returns empty []string if no address is present.
+func (v *VCard) StreetAddress() (street []string) {
+	offset := v.getStreetAddressOffset()
+
+	if offset > 0 {
+		for i := 0; i <= offset; i++ {
+			street = append(street, v.getFirstAddressField(2+i))
+		}
+	} else {
+		street = append(street, v.getFirstAddressField(2))
+	}
+
+	return street
 }
 
 // Locality returns the address locality.

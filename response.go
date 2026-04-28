@@ -133,7 +133,11 @@ func addEntityFields(w *WhoisStyleResponse, t string, e *Entity) {
 	w.add(t+" Name", v.Name())
 	w.add(t+" PO Box", v.POBox())
 	w.add(t+" Extended Address", v.ExtendedAddress())
-	w.add(t+" Street", v.StreetAddress())
+
+	for _, street := range v.StreetAddress() {
+		w.add(t+" Street", street)
+	}
+
 	w.add(t+" Locality", v.Locality())
 	w.add(t+" Post Code", v.PostalCode())
 	w.add(t+" Country", v.Country())

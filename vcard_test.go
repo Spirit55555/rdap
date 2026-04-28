@@ -6,6 +6,7 @@ package rdap
 
 import (
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/Spirit55555/rdap/test"
@@ -149,7 +150,7 @@ func TestVCardQuickAccessors(t *testing.T) {
 		j.Name(),
 		j.POBox(),
 		j.ExtendedAddress(),
-		j.StreetAddress(),
+		strings.Join(j.StreetAddress(), ", "),
 		j.Locality(),
 		j.Region(),
 		j.PostalCode(),
@@ -166,7 +167,7 @@ func TestVCardQuickAccessors(t *testing.T) {
 		"Simon Perreault",
 		"",
 		"Suite D2-630",
-		"2875 Laurier",
+		"2875 Laurier, Small house, Big house",
 		"Quebec",
 		"QC",
 		"G1V 2M2",
