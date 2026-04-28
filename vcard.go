@@ -106,6 +106,10 @@ func (p *VCardProperty) appendValueStrings(v interface{}, strings *[]string) {
 	case string:
 		*strings = append(*strings, v)
 	case []interface{}:
+		if len(v) == 0 {
+			*strings = append(*strings, "")
+		}
+
 		for _, v2 := range v {
 			p.appendValueStrings(v2, strings)
 		}

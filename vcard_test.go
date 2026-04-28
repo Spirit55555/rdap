@@ -179,3 +179,17 @@ func TestVCardQuickAccessors(t *testing.T) {
 		t.Errorf("Got %v expected %v\n", got, expected)
 	}
 }
+
+func TestVCardEmptyAdrArray(t *testing.T) {
+	j, err := NewVCard(test.LoadFile("jcard/example_empty_adr_array.json"))
+	if j == nil || err != nil {
+		t.Errorf("jCard parse failed %v %s\n", j, err)
+	}
+
+	expectedLength := 7
+	realLength := len(j.GetFirst("adr").Values())
+
+	if expectedLength != realLength {
+		t.Errorf("Length was %v expected %v\n", realLength, expectedLength)
+	}
+}

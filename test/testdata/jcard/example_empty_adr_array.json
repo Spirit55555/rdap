@@ -1,0 +1,19 @@
+   ["vcard",
+     [
+       ["version", {}, "text", "4.0"],
+       ["fn", {}, "text", "Simon Perreault"],
+       ["adr",
+          {},
+          "text",
+          [
+           "",
+           "Suite D2-630",
+           [],
+           "Quebec",
+           "QC",
+           "G1V 2M2",
+           "Canada"
+          ]
+       ]
+     ]
+   ]
