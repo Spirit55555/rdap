@@ -378,6 +378,7 @@ func (v *VCard) ExtendedAddress() string {
 // StreetAddress returns the street address.
 //
 // Returns empty string if no address is present.
+// TODO: This only returns the first street address value if it's an array
 func (v *VCard) StreetAddress() string {
 	return v.getFirstAddressField(2)
 }
@@ -386,21 +387,21 @@ func (v *VCard) StreetAddress() string {
 //
 // Returns empty string if no address is present.
 func (v *VCard) Locality() string {
-	return v.getFirstAddressField(3)
+	return v.getFirstAddressField(3 + v.getStreetAddressOffset())
 }
 
 // Region returns the address region (e.g. state or province).
 //
 // Returns empty string if no address is present.
 func (v *VCard) Region() string {
-	return v.getFirstAddressField(4)
+	return v.getFirstAddressField(4 + v.getStreetAddressOffset())
 }
 
 // PostalCode returns the address postal code (e.g. zip code).
 //
 // Returns empty string if no address is present.
 func (v *VCard) PostalCode() string {
-	return v.getFirstAddressField(5)
+	return v.getFirstAddressField(5 + v.getStreetAddressOffset())
 }
 
 // Country returns the address country name.
@@ -409,7 +410,7 @@ func (v *VCard) PostalCode() string {
 //
 // Returns empty string if no address is present.
 func (v *VCard) Country() string {
-	return v.getFirstAddressField(6)
+	return v.getFirstAddressField(6 + v.getStreetAddressOffset())
 }
 
 // Tel returns the VCard's first (voice) telephone number.
@@ -483,9 +484,22 @@ func (v *VCard) getFirstAddressField(index int) string {
 
 	values := adr.Values()
 
-	if index >= len(values) {
-		return ""
+	return values[index]
+}
+
+// Calculate the offset for when the street address is more than 1 value
+func (v *VCard) getStreetAddressOffset() int {
+	offset := 0
+
+	adr := v.GetFirst("adr")
+	if adr == nil {
+		return offset
 	}
 
-	return values[index]
+	//If adr.Values() has more than 7 values, we know the street address contains more than 1 value
+	if len(adr.Values()) > 7 {
+		offset = len(adr.Values()) - 7
+	}
+
+	return offset
 }

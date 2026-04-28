@@ -23,7 +23,11 @@
           [
            "",
            "Suite D2-630",
-           "2875 Laurier",
+           [
+            "2875 Laurier",
+            "Small house",
+            "Big house"
+          ],
            "Quebec",
            "QC",
            "G1V 2M2",
