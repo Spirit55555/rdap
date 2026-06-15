@@ -11,6 +11,7 @@ import (
 	"net"
 	"net/http"
 	"net/url"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -20,8 +21,6 @@ import (
 	"github.com/Spirit55555/rdap/sandbox"
 
 	"golang.org/x/crypto/pkcs12"
-
-	"os"
 
 	kingpin "github.com/alecthomas/kingpin/v2"
 )
@@ -73,6 +72,7 @@ Advanced options (query):
                       - nameserver-search-by-ip
                       - entity-search
                       - entity-search-by-handle
+                      - autnum-search
                       The servers for domain, ip, autnum, url queries can be
                       determined automatically. Otherwise, the RDAP server
                       (--server=URL) must be specified.
@@ -80,7 +80,9 @@ Advanced options (query):
 Advanced options (bootstrapping):
       --cache-dir=DIR Bootstrap cache directory to use. Specify empty string
                       to disable bootstrap caching. The directory is created
-                      automatically as needed. (default: $HOME/.openrdap).
+                      automatically as needed.
+                      (default: $XDG_CACHE_HOME/openrdap, falling back to
+                      $HOME/.cache/openrdap).
       --bs-url=URL    Bootstrap service URL (default: https://data.iana.org/rdap)
       --bs-ttl=SECS   Bootstrap cache time in seconds (default: 3600)
 
@@ -287,6 +289,8 @@ func RunCLI(args []string, stdout io.Writer, stderr io.Writer, options CLIOption
 		req = NewRequest(NameserverSearchRequest, queryText)
 	case "nameserver-search-by-ip":
 		req = NewRequest(NameserverSearchByNameserverIPRequest, queryText)
+	case "autnum-search":
+		req = NewRequest(AutnumSearchRequest, queryText)
 	default:
 		printError(stderr, fmt.Sprintf("Unknown query type '%s'", *queryType))
 		return 1
@@ -503,7 +507,7 @@ func RunCLI(args []string, stdout io.Writer, stderr io.Writer, options CLIOption
 		return 1
 	}
 
-	// Insert a blank line to seperate verbose messages/proper output.
+	// Insert a blank line to separate verbose messages/proper output.
 	if *verboseFlag {
 		fmt.Fprintln(stderr, "")
 	}

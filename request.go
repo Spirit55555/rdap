@@ -33,6 +33,7 @@ const (
 	NameserverSearchByNameserverIPRequest
 	EntitySearchRequest
 	EntitySearchByHandleRequest
+	AutnumSearchRequest
 
 	// RawRequest is a request with a fixed RDAP URL.
 	RawRequest
@@ -68,6 +69,8 @@ func (r RequestType) String() string {
 		return "entity-search"
 	case EntitySearchByHandleRequest:
 		return "entity-search-by-handle"
+	case AutnumSearchRequest:
+		return "autnum-search"
 	case RawRequest:
 		return "url"
 	default:
@@ -100,6 +103,7 @@ func (r RequestType) String() string {
 //	rdap.NameserverSearchByNameserverIPRequest | No            | nameservers?ip=QUERY    | 192.0.2.0
 //	rdap.EntitySearchRequest                   | No            | entities?fn=QUERY       | ABC*-VRSN
 //	rdap.EntitySearchByHandleRequest           | No            | entities?handle=QUERY   | ABC*-VRSN
+//	rdap.AutnumSearchRequest                   | No            | autnums?handle=QUERY    | AS6006*
 //	                                           |               |                         |
 //	rdap.RawRequest                            | N/A           | N/A                     | N/A
 //
@@ -219,6 +223,9 @@ func (r *Request) pathAndValues() (string, url.Values) {
 		values["fn"] = []string{r.Query}
 	case EntitySearchByHandleRequest:
 		path = "entities"
+		values["handle"] = []string{r.Query}
+	case AutnumSearchRequest:
+		path = "autnums"
 		values["handle"] = []string{r.Query}
 	case RawRequest:
 		// Server URL(s) are the entire request.
@@ -436,7 +443,7 @@ func NewRequest(requestType RequestType, query string) *Request {
 
 // NewAutoRequest creates a Request by guessing the type required for |queryText|.
 //
-// The following types are suppported:
+// The following types are supported:
 //   - RawRequest    - e.g. https://example.com/domain/example2.com
 //   - DomainRequest - e.g. example.com, https://example.com, http://example.com/
 //   - IPRequest     - e.g. 192.0.2.0, 2001:db8::, 192.0.2.0/24, 2001:db8::/128

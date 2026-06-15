@@ -66,17 +66,17 @@
 // By default, Service Registry files are cached in memory. bootstrap.Client
 // also supports caching the Service Registry files on disk. The default cache
 // location is
-// $HOME/.openrdap/.
+// $XDG_CACHE_HOME/openrdap/ (falling back to $HOME/.cache/openrdap/).
 //
 // Disk cache usage:
 //
-//	b := bootstrap.NewClient()
+//	b := &bootstrap.Client{}
 //	b.Cache = cache.NewDiskCache()
 //
 //	dsr := b.DNS()  // Tries to load dns.json from disk cache, doesn't exist yet, so returns nil.
 //	b.Download(bootstrap.DNS) // Downloads dns.json, saves to disk cache.
 //
-//	b2 := bootstrap.NewClient()
+//	b2 := &bootstrap.Client{}
 //	b2.Cache = cache.NewDiskCache()
 //
 //	dsr2 := b.DNS()  // Loads dns.json from disk cache.
@@ -360,7 +360,7 @@ func (c *Client) Lookup(question *Question) (*Answer, error) {
 // This function never initiates a network transfer.
 func (c *Client) ASN() *ASNRegistry {
 	c.init()
-	c.freshenFromCache(ServiceProvider)
+	c.freshenFromCache(ASN)
 
 	s, _ := c.registries[ASN].(*ASNRegistry)
 	return s
@@ -371,7 +371,7 @@ func (c *Client) ASN() *ASNRegistry {
 // This function never initiates a network transfer.
 func (c *Client) DNS() *DNSRegistry {
 	c.init()
-	c.freshenFromCache(ServiceProvider)
+	c.freshenFromCache(DNS)
 
 	s, _ := c.registries[DNS].(*DNSRegistry)
 	return s
@@ -382,7 +382,7 @@ func (c *Client) DNS() *DNSRegistry {
 // This function never initiates a network transfer.
 func (c *Client) IPv4() *NetRegistry {
 	c.init()
-	c.freshenFromCache(ServiceProvider)
+	c.freshenFromCache(IPv4)
 
 	s, _ := c.registries[IPv4].(*NetRegistry)
 	return s
@@ -393,7 +393,7 @@ func (c *Client) IPv4() *NetRegistry {
 // This function never initiates a network transfer.
 func (c *Client) IPv6() *NetRegistry {
 	c.init()
-	c.freshenFromCache(ServiceProvider)
+	c.freshenFromCache(IPv6)
 
 	s, _ := c.registries[IPv6].(*NetRegistry)
 	return s
